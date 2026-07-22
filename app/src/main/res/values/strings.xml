@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">فندقي</string>
+    <string name="app_tagline">لحجز الفنادق وخدمات السفر</string>
+    <string name="welcome_title">اختر مدينتك</string>
+    <string name="welcome_subtitle">دليلك الذكي لأفضل الفنادق</string>
+    <string name="hotels_title">الفنادق المتاحة</string>
+    <string name="rooms_title">الغرف المتاحة</string>
+    <string name="book_now">احجز الآن</string>
+    <string name="confirm_booking">تأكيد الحجز وإرسال السند بالواتساب</string>
+    <string name="room_available">متاحة</string>
+    <string name="room_booked">محجوزة</string>
+    <string name="room_pending">قيد المراجعة</string>
+    <string name="admin_login">دخول الإدارة</string>
+    <string name="loading">جاري التحميل...</string>
+    <string name="no_internet">لا يوجد اتصال بالإنترنت — يتم عرض آخر بيانات محفوظة</string>
+    <string name="error_generic">حدث خطأ ما، حاول مرة أخرى</string>
+    <string name="empty_hotels">لا توجد فنادق متاحة حالياً في هذه المدينة</string>
+</resources>
