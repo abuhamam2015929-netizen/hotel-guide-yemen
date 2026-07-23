@@ -11,6 +11,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.hotelguide.yemen.data.model.Hotel
 
+@OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
+
 @Composable
 fun HotelsScreen(
     cityId: String,
