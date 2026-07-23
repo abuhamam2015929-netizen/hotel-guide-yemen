@@ -6,7 +6,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.hotelguide.yemen.ui.client.welcome.WelcomeScreen
-
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+import com.hotelguide.yemen.ui.client.hotels.HotelsScreen
 /**
  * شجرة التنقل الرئيسية. كل شاشة جديدة تُضاف هنا كسطر composable() واحد فقط.
  * حالياً مُفعّلة شاشة الترحيب، وباقي الشاشات ستُضاف تباعاً بنفس النمط
@@ -25,8 +27,16 @@ fun HotelGuideNavGraph(navController: NavHostController = rememberNavController(
                 }
             )
         }
-
-        // composable(Screen.HotelList.route) { ... } — الخطوة القادمة
+  composable(
+    route = Screen.HotelList.route,
+    arguments = listOf(navArgument("cityId") { type = NavType.StringType })
+) { backStackEntry ->
+    val cityId = backStackEntry.arguments?.getString("cityId") ?: ""
+    HotelsScreen(
+        cityId = cityId,
+        onBack = { navController.popBackStack() }
+    )
+}
         // composable(Screen.RoomList.route) { ... }
         // composable(Screen.RoomDetail.route) { ... }
         // composable(Screen.Payment.route) { ... }
