@@ -12,11 +12,11 @@ import coil.compose.AsyncImage
 import com.hotelguide.yemen.data.model.Hotel
 
 @OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
-
 @Composable
 fun HotelsScreen(
     cityId: String,
     onBack: () -> Unit,
+    onHotelClick: (Hotel) -> Unit,
     viewModel: HotelsViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -54,7 +54,7 @@ fun HotelsScreen(
                         contentPadding = PaddingValues(16.dp)
                     ) {
                         items(state.hotels) { hotel ->
-                            HotelCard(hotel)
+                            HotelCard(hotel = hotel, onClick = { onHotelClick(hotel) })
                         }
                     }
                 }
@@ -64,8 +64,11 @@ fun HotelsScreen(
 }
 
 @Composable
-fun HotelCard(hotel: Hotel) {
-    Card(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)) {
+fun HotelCard(hotel: Hotel, onClick: () -> Unit) {
+    Card(
+        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+        onClick = onClick
+    ) {
         Column(modifier = Modifier.padding(16.dp)) {
             AsyncImage(
                 model = hotel.imageUrl,
