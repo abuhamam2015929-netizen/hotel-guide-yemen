@@ -12,6 +12,8 @@ import com.hotelguide.yemen.ui.client.hotels.HotelsScreen
 import com.hotelguide.yemen.ui.client.rooms.RoomsScreen
 import com.hotelguide.yemen.ui.client.roomdetail.RoomDetailScreen
 import com.hotelguide.yemen.ui.client.payment.PaymentScreen
+import com.hotelguide.yemen.ui.admin.login.AdminLoginScreen
+import com.hotelguide.yemen.ui.admin.dashboard.AdminDashboardScreen
 
 @Composable
 fun HotelGuideNavGraph(navController: NavHostController = rememberNavController()) {
@@ -85,7 +87,28 @@ fun HotelGuideNavGraph(navController: NavHostController = rememberNavController(
             )
         }
 
-        // composable(Screen.AdminLogin.route) { ... }
-        // composable(Screen.AdminDashboard.route) { ... }
+        composable(Screen.AdminLogin.route) {
+            AdminLoginScreen(
+                onLoginSuccess = {
+                    navController.navigate(Screen.AdminDashboard.route) {
+                        popUpTo(Screen.AdminLogin.route) { inclusive = true }
+                    }
+                },
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(Screen.AdminDashboard.route) {
+            AdminDashboardScreen(
+                onLogout = {
+                    navController.navigate(Screen.Welcome.route) {
+                        popUpTo(0)
+                    }
+                },
+                onRoomClick = { roomDocId ->
+                    // بنضيف شاشة تعديل الغرفة بالخطوة القادمة
+                }
+            )
+        }
     }
 }
