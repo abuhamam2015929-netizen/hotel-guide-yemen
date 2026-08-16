@@ -25,6 +25,9 @@ fun HotelGuideNavGraph(navController: NavHostController = rememberNavController(
             WelcomeScreen(
                 onCitySelected = { city ->
                     navController.navigate(Screen.HotelList.createRoute(city.id))
+                },
+                onAdminLoginClick = {
+                    navController.navigate(Screen.AdminLogin.route)
                 }
             )
         }
