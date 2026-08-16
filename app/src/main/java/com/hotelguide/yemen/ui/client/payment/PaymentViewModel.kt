@@ -15,16 +15,13 @@ import kotlinx.coroutines.tasks.await
 
 sealed class PaymentUiState {
     object Loading : PaymentUiState()
-    data class Success(val hotel: Hotel, val room: Room) : PaymentUiState()
+    data class Success(val hotel: Hotel, val room: Room, val roomDocId: String) : PaymentUiState()
     data class Error(val message: String) : PaymentUiState()
 }
 
 class PaymentViewModel : ViewModel() {
     private val _uiState = MutableStateFlow<PaymentUiState>(PaymentUiState.Loading)
     val uiState: StateFlow<PaymentUiState> = _uiState.asStateFlow()
-
-    private val _bookingConfirmed = MutableStateFlow(false)
-    val bookingConfirmed: StateFlow<Boolean> = _bookingConfirmed.asStateFlow()
 
     fun loadData(hotelId: String, roomId: String) {
         viewModelScope.launch {
@@ -43,10 +40,11 @@ class PaymentViewModel : ViewModel() {
                     .await()
 
                 val hotel = hotelSnapshot.documents.firstOrNull()?.toObject(Hotel::class.java)
-                val room = roomSnapshot.documents.firstOrNull()?.toObject(Room::class.java)
+                val roomDoc = roomSnapshot.documents.firstOrNull()
+                val room = roomDoc?.toObject(Room::class.java)
 
-                if (hotel != null && room != null) {
-                    _uiState.value = PaymentUiState.Success(hotel, room)
+                if (hotel != null && room != null && roomDoc != null) {
+                    _uiState.value = PaymentUiState.Success(hotel, room, roomDoc.id)
                 } else {
                     _uiState.value = PaymentUiState.Error("تعذر العثور على بيانات الفندق أو الغرفة")
                 }
@@ -63,9 +61,8 @@ class PaymentViewModel : ViewModel() {
                     .document(roomDocId)
                     .update("status", RoomStatus.PENDING.name)
                     .await()
-                _bookingConfirmed.value = true
             } catch (e: Exception) {
-                // حتى لو فشل التحديث، نكمل فتح واتساب (لا نعطّل تجربة المستخدم)
+                // نكمل فتح واتساب حتى لو فشل التحديث، لتجنب تعطيل المستخدم
             } finally {
                 onDone()
             }
