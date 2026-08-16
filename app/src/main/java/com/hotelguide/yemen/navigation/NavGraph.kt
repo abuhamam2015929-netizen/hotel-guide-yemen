@@ -10,6 +10,7 @@ import androidx.navigation.navArgument
 import com.hotelguide.yemen.ui.client.welcome.WelcomeScreen
 import com.hotelguide.yemen.ui.client.hotels.HotelsScreen
 import com.hotelguide.yemen.ui.client.rooms.RoomsScreen
+import com.hotelguide.yemen.ui.client.roomdetail.RoomDetailScreen
 
 @Composable
 fun HotelGuideNavGraph(navController: NavHostController = rememberNavController()) {
@@ -48,12 +49,25 @@ fun HotelGuideNavGraph(navController: NavHostController = rememberNavController(
                 hotelId = hotelId,
                 onBack = { navController.popBackStack() },
                 onRoomClick = { room ->
-                    // بننشئ RoomDetailScreen بالخطوة القادمة
+                    navController.navigate(Screen.RoomDetail.createRoute(room.id))
                 }
             )
         }
 
-        // composable(Screen.RoomDetail.route) { ... }
+        composable(
+            route = Screen.RoomDetail.route,
+            arguments = listOf(navArgument("roomId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val roomId = backStackEntry.arguments?.getString("roomId") ?: ""
+            RoomDetailScreen(
+                roomId = roomId,
+                onBack = { navController.popBackStack() },
+                onBookClick = { room ->
+                    navController.navigate(Screen.Payment.createRoute(room.id))
+                }
+            )
+        }
+
         // composable(Screen.Payment.route) { ... }
         // composable(Screen.AdminLogin.route) { ... }
         // composable(Screen.AdminDashboard.route) { ... }
