@@ -11,6 +11,7 @@ import com.hotelguide.yemen.ui.client.welcome.WelcomeScreen
 import com.hotelguide.yemen.ui.client.hotels.HotelsScreen
 import com.hotelguide.yemen.ui.client.rooms.RoomsScreen
 import com.hotelguide.yemen.ui.client.roomdetail.RoomDetailScreen
+import com.hotelguide.yemen.ui.client.payment.PaymentScreen
 
 @Composable
 fun HotelGuideNavGraph(navController: NavHostController = rememberNavController()) {
@@ -63,12 +64,27 @@ fun HotelGuideNavGraph(navController: NavHostController = rememberNavController(
                 roomId = roomId,
                 onBack = { navController.popBackStack() },
                 onBookClick = { room ->
-                    navController.navigate(Screen.Payment.createRoute(room.id))
+                    navController.navigate(Screen.Payment.createRoute(room.hotelId, room.id))
                 }
             )
         }
 
-        // composable(Screen.Payment.route) { ... }
+        composable(
+            route = Screen.Payment.route,
+            arguments = listOf(
+                navArgument("hotelId") { type = NavType.StringType },
+                navArgument("roomId") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val hotelId = backStackEntry.arguments?.getString("hotelId") ?: ""
+            val roomId = backStackEntry.arguments?.getString("roomId") ?: ""
+            PaymentScreen(
+                hotelId = hotelId,
+                roomId = roomId,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
         // composable(Screen.AdminLogin.route) { ... }
         // composable(Screen.AdminDashboard.route) { ... }
     }
