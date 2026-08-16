@@ -25,7 +25,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 @Composable
 fun WelcomeScreen(
     viewModel: WelcomeViewModel = viewModel(),
-    onCitySelected: (City) -> Unit
+    onCitySelected: (City) -> Unit,
+    onAdminLoginClick: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -94,6 +95,13 @@ fun WelcomeScreen(
                     textAlign = TextAlign.Center
                 )
             }
+
+            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(16.dp))
+            TextButton(onClick = onAdminLoginClick) {
+                Text(text = "دخول أصحاب الفنادق")
+            }
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
